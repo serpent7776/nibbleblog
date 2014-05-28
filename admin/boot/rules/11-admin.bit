@@ -78,7 +78,13 @@ if(isset($controllers[$url['controller']][$url['action']]))
 			exit('Nibbleblog security error - Obj $Login not found');
 
 		if(!$Login->is_logged())
-			exit('Nibbleblog security error - User not logged');
+		{
+			$login_page=BLOG_URL.'admin.php';
+			header('Refresh: 2;url='.$login_page);
+			echo 'Nibbleblog security error - User not logged<br />';
+			echo 'goto <a href="'.$login_page.'">login</a> page<br />';
+			exit;
+		}
 	}
 
 	$layout['controller'] 	= $dirname.$parameters['controller'].'.bit';
@@ -87,5 +93,3 @@ if(isset($controllers[$url['controller']][$url['action']]))
 	$layout['title'] 		= $parameters['title'];
 	$layout['id_sidebar']	= isset($parameters['id_sidebar'])?$parameters['id_sidebar']:null;
 }
-
-?>
