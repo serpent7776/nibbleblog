@@ -26,5 +26,3 @@ foreach($plugins as $plugin)
 // Load the controller and template / view
 require(PATH_ADMIN_CONTROLLER.$layout['controller']);
 require(PATH_ADMIN_TEMPLATES.$layout['template']);
-
-?>

@@ -67,6 +67,8 @@ $controllers['user']['login']			= array('security'=>false, 'title'=>$_LANG['SIGN
 $controllers['user']['forgot']			= array('security'=>false, 'title'=>$_LANG['CHANGE_PASSWORD'], 'controller'=>'forgot', 'view'=>'forgot', 'template'=>$default_template, 'id_sidebar'=>30);
 $controllers['user']['send_forgot']		= array('security'=>false, 'title'=>$_LANG['FORGOT_PASSWORD'], 'controller'=>'send_forgot', 'view'=>'send_forgot', 'template'=>'login', 'id_sidebar'=>31);
 
+$controllers['tags']['list']	 		= array('security'=>true, 'title'=>$_LANG['MANAGE_TAGS'], 'controller'=>'list', 'view'=>'list', 'template'=>$default_template, 'id_sidebar'=>32);
+
 if(isset($controllers[$url['controller']][$url['action']]))
 {
 	$dirname = $url['controller'].'/';
@@ -87,5 +89,3 @@ if(isset($controllers[$url['controller']][$url['action']]))
 	$layout['title'] 		= $parameters['title'];
 	$layout['id_sidebar']	= isset($parameters['id_sidebar'])?$parameters['id_sidebar']:null;
 }
-
-?>

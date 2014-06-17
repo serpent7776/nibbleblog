@@ -138,6 +138,27 @@ class DB_TAGS {
 		return true;
 	}
 
+	//delete a tag with given id
+	public function delete($id)
+	{
+		$id=(int)$id;
+		$tmp_node = $this->xml->xpath('/tags/list/tag[@id="'.$id.'"]');
+
+		// Category not found
+		if( $tmp_node == array() )
+			return false;
+
+		// Check if the tag have some post assoc
+		$count=$this->get_post_count($id);
+		if( $count===false || $count > 0)
+			return false;
+
+		$dom = dom_import_simplexml($tmp_node[0]);
+		$dom->parentNode->removeChild($dom);
+
+		return $this->savetofile();
+	}
+
 	// Delete all links
 	public function delete_links($args)
 	{
@@ -150,6 +171,26 @@ class DB_TAGS {
 		}
 
 		return true;
+	}
+
+	/*
+	 * Return number of posts associated with tag with given id
+	 *
+	 * Parameters:
+	 *  $id - tag id
+	 *
+	 * Returns:
+	 *  number of posts associated with given tag or false on error
+	 */
+	public function get_post_count($id)
+	{
+		if(!is_int($id))
+			return false;
+
+		$nodes = $this->xml->xpath('/tags/links/link[@id_tag="'.$id.'"]');
+
+		return count($nodes);
+
 	}
 
 	// Get all id post by tag name
@@ -189,7 +230,7 @@ class DB_TAGS {
 			$where = '@id_tag="'.$id.'"';
 			$nodes = $this->xml->xpath('/tags/links/link['.$where.']');
 
-			$tmp[$name] = array('amount'=>count($nodes), 'name_human'=>$name_human);
+			$tmp[$name] = array('id'=>$id, 'amount'=>count($nodes), 'name_human'=>$name_human);
 		}
 
 		return $tmp;
@@ -234,5 +275,3 @@ class DB_TAGS {
 
 
 } // END Class
-
-?>
